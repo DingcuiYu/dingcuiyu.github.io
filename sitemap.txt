@@ -1,6 +1,9 @@
-http://example.com/2023/03/14/test/
-http://example.com/link/index.html
-http://example.com/about/index.html
-http://example.com/categories/index.html
-http://example.com/tags/index.html
-http://example.com/
+http://dingcuiyu.github.io/2023/03/14/ChCore-lab-v2-ECNUver-LAB-2-%E4%B8%8A%EF%BC%89/
+http://dingcuiyu.github.io/link/index.html
+http://dingcuiyu.github.io/2023/03/14/test/
+http://dingcuiyu.github.io/about/index.html
+http://dingcuiyu.github.io/categories/index.html
+http://dingcuiyu.github.io/tags/index.html
+http://dingcuiyu.github.io/
+http://dingcuiyu.github.io/tags/%E5%AE%9E%E9%AA%8C%E6%89%8B%E5%86%8C/
+http://dingcuiyu.github.io/categories/OSLab/
