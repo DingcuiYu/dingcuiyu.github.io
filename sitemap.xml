@@ -83,6 +83,13 @@
 
   
   <url>
+    <loc>http://dingcuiyu.github.io/tags/%E5%AE%9E%E9%AA%8C%E6%89%8B%E5%86%8C/</loc>
+    <lastmod>2023-03-31</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
     <loc>http://dingcuiyu.github.io/tags/FAST-23/</loc>
     <lastmod>2023-03-31</lastmod>
     <changefreq>weekly</changefreq>
@@ -103,24 +110,17 @@
     <priority>0.2</priority>
   </url>
   
-  <url>
-    <loc>http://dingcuiyu.github.io/tags/%E5%AE%9E%E9%AA%8C%E6%89%8B%E5%86%8C/</loc>
-    <lastmod>2023-03-31</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
 
   
   <url>
-    <loc>http://dingcuiyu.github.io/categories/Paper-Reading/</loc>
+    <loc>http://dingcuiyu.github.io/categories/OSLab/</loc>
     <lastmod>2023-03-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>http://dingcuiyu.github.io/categories/OSLab/</loc>
+    <loc>http://dingcuiyu.github.io/categories/Paper-Reading/</loc>
     <lastmod>2023-03-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
