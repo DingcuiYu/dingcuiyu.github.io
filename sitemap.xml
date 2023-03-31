@@ -2,18 +2,36 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>http://dingcuiyu.github.io/Publications/index.html</loc>
+    <loc>http://dingcuiyu.github.io/2023/03/14/ChCore-lab-v2-ECNUver-LAB-2-%E4%B8%8A%EF%BC%89/</loc>
     
-    <lastmod>2023-03-30</lastmod>
+    <lastmod>2023-03-31</lastmod>
     
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
-    <loc>http://dingcuiyu.github.io/2023/03/14/ChCore-lab-v2-ECNUver-LAB-2-%E4%B8%8A%EF%BC%89/</loc>
+    <loc>http://dingcuiyu.github.io/2023/03/31/Intelligent-Resource-Scheduling-for-Co-located-Latency-critical-Services-A-Multi-Model-Collaborative-Learning-Approach%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/</loc>
     
-    <lastmod>2023-03-20</lastmod>
+    <lastmod>2023-03-31</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://dingcuiyu.github.io/about/index.html</loc>
+    
+    <lastmod>2023-03-31</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://dingcuiyu.github.io/Publications/index.html</loc>
+    
+    <lastmod>2023-03-30</lastmod>
     
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -30,15 +48,6 @@
   
   <url>
     <loc>http://dingcuiyu.github.io/2023/03/14/test/</loc>
-    
-    <lastmod>2023-03-14</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>http://dingcuiyu.github.io/about/index.html</loc>
     
     <lastmod>2023-03-14</lastmod>
     
@@ -67,7 +76,7 @@
 
   <url>
     <loc>http://dingcuiyu.github.io/</loc>
-    <lastmod>2023-03-30</lastmod>
+    <lastmod>2023-03-31</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
@@ -75,7 +84,28 @@
   
   <url>
     <loc>http://dingcuiyu.github.io/tags/%E5%AE%9E%E9%AA%8C%E6%89%8B%E5%86%8C/</loc>
-    <lastmod>2023-03-30</lastmod>
+    <lastmod>2023-03-31</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://dingcuiyu.github.io/tags/FAST-23/</loc>
+    <lastmod>2023-03-31</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://dingcuiyu.github.io/tags/AI-for-Storage/</loc>
+    <lastmod>2023-03-31</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://dingcuiyu.github.io/tags/Resource-Scheduling/</loc>
+    <lastmod>2023-03-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
@@ -84,7 +114,14 @@
   
   <url>
     <loc>http://dingcuiyu.github.io/categories/OSLab/</loc>
-    <lastmod>2023-03-30</lastmod>
+    <lastmod>2023-03-31</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://dingcuiyu.github.io/categories/Paper-Reading/</loc>
+    <lastmod>2023-03-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
