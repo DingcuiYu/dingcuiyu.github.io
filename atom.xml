@@ -6,7 +6,7 @@
   <link href="http://dingcuiyu.github.io/atom.xml" rel="self"/>
   
   <link href="http://dingcuiyu.github.io/"/>
-  <updated>2023-03-31T12:32:42.465Z</updated>
+  <updated>2023-04-09T09:07:08.842Z</updated>
   <id>http://dingcuiyu.github.io/</id>
   
   <author>
@@ -15,6 +15,37 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Belady&#39;s MIN缓存管理算法阅读笔记</title>
+    <link href="http://dingcuiyu.github.io/2023/04/09/Belady-s-MIN%E7%BC%93%E5%AD%98%E7%AE%A1%E7%90%86%E7%AE%97%E6%B3%95%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/"/>
+    <id>http://dingcuiyu.github.io/2023/04/09/Belady-s-MIN%E7%BC%93%E5%AD%98%E7%AE%A1%E7%90%86%E7%AE%97%E6%B3%95%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/</id>
+    <published>2023-04-09T09:01:00.000Z</published>
+    <updated>2023-04-09T09:07:08.842Z</updated>
+    
+    <content type="html"><![CDATA[<h1>A study of replacement algorithms for a virtual-storage computer</h1><p>作者：L. A. Belady</p><p>期刊：IBM Systems Journal</p><p>年份：1966</p><p>原文不太好找，所以这里放一个<a href="https://github.com/detaos/thesis/blob/master/papers/A%20study%20of%20replacement%20algorithms%20for%20virtual%20storage%20computers.pdf">github网址</a>，里面可以下载。</p>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;h1&gt;A study of replacement algorithms for a virtual-storage computer&lt;/h1&gt;
+&lt;p&gt;作者：L. A. Belady&lt;/p&gt;
+&lt;p&gt;期刊：IBM Systems Journal&lt;/p&gt;
+&lt;p&gt;年份：1966&lt;/p</summary>
+      
+    
+    
+    
+    <category term="Paper Reading" scheme="http://dingcuiyu.github.io/categories/Paper-Reading/"/>
+    
+    
+    <category term="Cache Management" scheme="http://dingcuiyu.github.io/tags/Cache-Management/"/>
+    
+    <category term="Cache Eviction" scheme="http://dingcuiyu.github.io/tags/Cache-Eviction/"/>
+    
+    <category term="Classical" scheme="http://dingcuiyu.github.io/tags/Classical/"/>
+    
+  </entry>
   
   <entry>
     <title>FAST 23-OSML 阅读笔记</title>
