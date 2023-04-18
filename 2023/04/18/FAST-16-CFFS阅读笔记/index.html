@@ -1,0 +1,337 @@
+<!DOCTYPE html><html lang="en" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"><title>FAST 16 - CFFS阅读笔记 | Dingcui Yu's Homepage</title><meta name="author" content="Dingcui Yu"><meta name="copyright" content="Dingcui Yu"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="ffffff"><meta name="description" content="The Composite-file File System: Decoupling the One-to-One Mapping of Files and Metadata for Better Performance Author: Shuanglong Zhang. et al Conference or Journal: FAST；TOS Institute: Google &amp; F">
+<meta property="og:type" content="article">
+<meta property="og:title" content="FAST 16 - CFFS阅读笔记">
+<meta property="og:url" content="http://dingcuiyu.github.io/2023/04/18/FAST-16-CFFS%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/index.html">
+<meta property="og:site_name" content="Dingcui Yu&#39;s Homepage">
+<meta property="og:description" content="The Composite-file File System: Decoupling the One-to-One Mapping of Files and Metadata for Better Performance Author: Shuanglong Zhang. et al Conference or Journal: FAST；TOS Institute: Google &amp; F">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://dingcuiyu.github.io/misaoimg/default_cover.png">
+<meta property="article:published_time" content="2023-04-18T11:25:00.000Z">
+<meta property="article:modified_time" content="2023-04-18T11:40:35.918Z">
+<meta property="article:author" content="Dingcui Yu">
+<meta property="article:tag" content="FAST 16">
+<meta property="article:tag" content="TOS 20">
+<meta property="article:tag" content="Small Files">
+<meta property="article:tag" content="Metadata">
+<meta property="article:tag" content="AI for Storage">
+<meta property="article:tag" content="Prefetching">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://dingcuiyu.github.io/misaoimg/default_cover.png"><link rel="shortcut icon" href="/misaoimg/yicon.png"><link rel="canonical" href="http://dingcuiyu.github.io/2023/04/18/FAST-16-CFFS%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: {"appId":"59Z9X7VJNV","apiKey":"6b44823baf5ab1302f5ceb701ce74d01","indexName":"hexo","hits":{"per_page":6},"languages":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}.","hits_stats":"${hits} results found in ${time} ms"}},
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: {"limitDay":1024,"position":"top","messagePrev":"It has been","messageNext":"days since the last update, the content of the article may be outdated."},
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":200},
+  copy: {
+    success: 'Copy successfully',
+    error: 'Copy error',
+    noSupport: 'The browser does not support'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: 'days',
+  date_suffix: {
+    just: 'Just',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: {"limitCount":50,"languages":{"author":"Author: Dingcui Yu","link":"Link: ","source":"Source: Dingcui Yu's Homepage","info":"Copyright is owned by the author. For commercial reprints, please contact the author for authorization. For non-commercial reprints, please indicate the source."}},
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: true,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  }
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'FAST 16 - CFFS阅读笔记',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2023-04-18 19:40:35'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+    win.getCSS = (url,id = false) => new Promise((resolve, reject) => {
+      const link = document.createElement('link')
+      link.rel = 'stylesheet'
+      link.href = url
+      if (id) link.id = id
+      link.onerror = reject
+      link.onload = link.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        link.onload = link.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(link)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', 'ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/atom.xml" title="Dingcui Yu's Homepage" type="application/atom+xml">
+</head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">Loading...</div></div></div><script>const preloader = {
+  endLoading: () => {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loading-box').classList.add("loaded")
+  },
+  initLoading: () => {
+    document.body.style.overflow = '';
+    document.getElementById('loading-box').classList.remove("loaded")
+
+  }
+}
+window.addEventListener('load',()=> { preloader.endLoading() })
+
+if (false) {
+  document.addEventListener('pjax:send', () => { preloader.initLoading() })
+  document.addEventListener('pjax:complete', () => { preloader.endLoading() })
+}</script><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/misaoimg/cute.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">5</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">12</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">2</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/Publications/"><i class="fa-fw fas fa-file-alt"></i><span> Publications</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('/misaoimg/default_cover.png')"><nav id="nav"><span id="blog-info"><a href="/" title="Dingcui Yu's Homepage"><img class="site-icon" src="/misaoimg/yicon.png"/><span class="site-name">Dingcui Yu's Homepage</span></a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search" href="javascript:void(0);"><i class="fas fa-search fa-fw"></i><span> Search</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/Publications/"><i class="fa-fw fas fa-file-alt"></i><span> Publications</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">FAST 16 - CFFS阅读笔记</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2023-04-18T11:25:00.000Z" title="Created 2023-04-18 19:25:00">2023-04-18</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2023-04-18T11:40:35.918Z" title="Updated 2023-04-18 19:40:35">2023-04-18</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Paper-Reading/">Paper Reading</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="FAST 16 - CFFS阅读笔记"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">Post View:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><p><strong>The Composite-file File System: Decoupling the One-to-One Mapping of Files and Metadata for Better Performance</strong></p>
+<p><code>Author</code>: Shuanglong Zhang. et al</p>
+<p><code>Conference or Journal</code>: FAST；TOS</p>
+<p><code>Institute</code>: Google &amp; Florida State University</p>
+<p><code>IsOpenSource</code>: No</p>
+<p><code>Link</code>: <a target="_blank" rel="noopener" href="https://www.usenix.org/system/files/conference/fast16/fast16-papers-zhang-shuanglong.pdf">https://www.usenix.org/system/files/conference/fast16/fast16-papers-zhang-shuanglong.pdf</a></p>
+<p><code>Published Date</code>: February 22, 2016 → March 1, 2020</p>
+<h2 id="摘要">摘要</h2>
+<p>传统的文件系统优化是基于文件与其元数据一一对应的基础上进行的，而这种文件-元数据的绑定会限制一些优化。本文设计并且实现、评估了一种复合文件文件系统，即允许文件到元数据的多对一映射。同时本文评估了多种映射机制的实现方式。在web服务器和软件生产工作集中，实证分析表明，本文提出的方式相比ext4，有超过27%的性能提升。</p>
+<h2 id="背景">背景</h2>
+<p>文件与元数据的一对一映射会限制一些优化方案。例如，预取多个文件块时也需要预取对应文件的元数据——而这是预取的主要副作用。有研究表明，访问32个小文件的延迟比访问同样大小的大文件的延迟高50%。</p>
+<p>因此，作者提出把多文件复合，公用同一个元数据，以减少对元数据的磁盘访问。</p>
+<h2 id="动机">动机</h2>
+<p>具体来说，除了上文提到的预取开销，作者提出CFFS（Composite-File File System）的其他动机如下：</p>
+<ul>
+<li><strong>频繁的小文件访问</strong></li>
+</ul>
+<p>作者内部的分析表明，超过80%的文件访问是针对小于32KB的小文件的。在从磁盘读取小文件花费的时间中，接近40%的时间花在了元数据访问上。所以，减少元数据I/O访问开销很有效。</p>
+<ul>
+<li><strong>冗余的元数据信息</strong></li>
+</ul>
+<p>许多文件的元数据属性是一致的，例如文件持有者、访问权限等。有研究表明，在工作站中对元数据压缩有最多75%的压缩率。使用共用的元数据只能减少很少的空间占用，但可以减少很多对元数据的I/O访问。</p>
+<ul>
+<li><strong>文件成组访问</strong></li>
+</ul>
+<p>研究表明，文件大多数是一起被访问的。例如访问网页时会访问其中引用的文件页。但是，之前针对此的方法的性能提升并不是线性的，因为有文件聚集的开销。</p>
+<ul>
+<li><strong>访问每个文件的开销比较高</strong></li>
+</ul>
+<p>如下图，访问同样大小的数据，访问开销与文件大小成反比。同时印证了背景中提出的小文件开销过大的问题。</p>
+<p><img src="https://s2.loli.net/2023/04/18/3EjP6g1IQ5DLVkS.png" alt="图 1"></p>
+<h2 id="复合文件的文件系统（Composite-File-File-System-CFFS）设计">复合文件的文件系统（Composite-File File System, CFFS）设计</h2>
+<p>**复合文件：**多个频繁被一起访问的小文件（<strong>子文件</strong>）组成复合文件，并共享一个元数据。小文件独有的元数据信息存储在 <code>inode</code> 中的 <code>extented attribute</code> 里。</p>
+<p>复合文件对用户不可见，而且针对文件的各种语义（包括日志等）和操作的方式保持不变。</p>
+<p>此时可以透明地利用VFS的预取以<strong>把多个小文件一起</strong>取到内存中。</p>
+<h3 id="1、数据的表现形式">1、数据的表现形式</h3>
+<p>子文件中的第一个文件是一个“entry point”，即开启预取的点。</p>
+<h3 id="2、元数据的表现形式和对应操作">2、元数据的表现形式和对应操作</h3>
+<ul>
+<li><strong>复合文件创建</strong></li>
+</ul>
+<p>如下图：</p>
+<p><img src="https://s2.loli.net/2023/04/18/m1oC7eRLSpuDEgc.png" alt="图 2"></p>
+<ul>
+<li><strong>权限</strong></li>
+</ul>
+<p>复合文件的 <code>inode</code> 的权限是所有子文件的权限的并集，每个子文件额外的权限会存储在附加属性中。</p>
+<ul>
+<li><strong>文件大小</strong></li>
+</ul>
+<p>当处于中间的子文件释放时，不会改变复合文件的大小。除非复合文件的空间利用率小于50%。</p>
+<ul>
+<li><code>inode</code> <strong>命名空间</strong></li>
+</ul>
+<p>复合文件的ID的高N位是复合文件的 <code>inode</code>  id，低M位用于子文件的ID。整个ID在本文中被称为 <code>CUID</code> 。如下图：</p>
+<p><img src="https://s2.loli.net/2023/04/18/L621byYnsSxH5i3.png" alt="图 3"></p>
+<ul>
+<li><strong>重命名</strong></li>
+</ul>
+<p>如果不包括把一个普通文件转化为复合文件（或者相反的操作），则重命名不改变 <code>CUID</code> ，反之，重命名会改变 <code>CUID</code> 。</p>
+<blockquote>
+<p>这一设定对根据 <code>inode</code> 的“唯一性”、“不变性”来识别文件的应用不友好。</p>
+</blockquote>
+<ul>
+<li><strong>锁</strong></li>
+</ul>
+<p>复合文件有一个锁，每个子文件同时各有一个锁。通常复合文件的锁可以同时获得，除非会影响到子文件之间的一致性（如更新子文件的成员、移动子文件在复合文件中的位置）。</p>
+<ul>
+<li><strong>更多</strong></li>
+</ul>
+<p>看论文。</p>
+<h3 id="3、识别复合文件的成员">3、识别复合文件的成员</h3>
+<ul>
+<li><strong>基于目录的小文件复合</strong></li>
+</ul>
+<p>一个目录下的文件常常会被一起访问，所以这种办法把同一个目录下的文件（包括子目录）复合为一个复合文件。这种办法无法捕获目录间的文件关系。</p>
+<ul>
+<li><strong>基于内部引用的小文件复合</strong></li>
+</ul>
+<p><code>html</code> 文件中常常包含超链接，网络爬虫常常通过这些链接访问其他文件。</p>
+<p>此外，基于 <code>Makefile</code> 的规则的编译也暗含了内部引用，即把生成同一个目标的源文件复合。</p>
+<p>但问题是这种办法需要对文本格式有了解，进行特定格式的文本分析。</p>
+<ul>
+<li><strong>基于频率挖掘的小文件复合</strong></li>
+</ul>
+<p>可以使用Apriori算法来发掘频繁访问的模式。大致流程如下图：</p>
+<p><img src="https://s2.loli.net/2023/04/18/6GaO4y1mwCfHPlW.png" alt="图 4"></p>
+<p>详细原理请参考<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/341882260">这里</a>。这种办法的内存和训练开销都很大。</p>
+<h2 id="CFFS的实现">CFFS的实现</h2>
+<p>本文使用 <code>FUSE(v2.9.3)</code>框架，在用户态建立了CFFS的原型，Linux版本是 <code>3.16.7</code> ，如下图：</p>
+<p><img src="https://s2.loli.net/2023/04/18/7vXFlsdwStp2bOB.png" alt="图 5"></p>
+<p>更多内容请见论文。</p>
+<h2 id="实验">实验</h2>
+<h3 id="实验环境">实验环境</h3>
+<p><img src="https://s2.loli.net/2023/04/18/EefwFDckrZ81x5G.png" alt="图 6"></p>
+<h3 id="实验结果">实验结果</h3>
+<h4 id="Microbenchmark的实验结果">Microbenchmark的实验结果</h4>
+<p>比较：完成时间</p>
+<p><img src="https://s2.loli.net/2023/04/18/sXzo8jAhgU6MDZS.png" alt="图 7"></p>
+<p><img src="https://s2.loli.net/2023/04/18/iaNl7HcojKwOvB2.png" alt="图 8"></p>
+<h4 id="Web-Server-Trace-Replay的实验结果">Web Server Trace Replay的实验结果</h4>
+<p>HDD 中1e-02之前的请求是缓存命中的。</p>
+<p><img src="https://s2.loli.net/2023/04/18/4kfLxqcpB25Dr98.png" alt="图 9"></p>
+<p><img src="https://s2.loli.net/2023/04/18/VG3UfMsT4lZFjR1.png" alt="图 10"></p>
+<h4 id="Software-Development-File-System-Trace-Replay的实验结果">Software Development File System Trace Replay的实验结果</h4>
+<p>因为不好收集单个请求的延迟，所以这里绘出了整体的完成时间。</p>
+<p><img src="https://s2.loli.net/2023/04/18/gBJqbT1XvALamK2.png" alt="图 11"></p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">Author: </span><span class="post-copyright-info"><a href="http://dingcuiyu.github.io">Dingcui Yu</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">Link: </span><span class="post-copyright-info"><a href="http://dingcuiyu.github.io/2023/04/18/FAST-16-CFFS%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/">http://dingcuiyu.github.io/2023/04/18/FAST-16-CFFS%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">Copyright Notice: </span><span class="post-copyright-info">All articles in this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/FAST-16/">FAST 16</a><a class="post-meta__tags" href="/tags/TOS-20/">TOS 20</a><a class="post-meta__tags" href="/tags/Small-Files/">Small Files</a><a class="post-meta__tags" href="/tags/Metadata/">Metadata</a><a class="post-meta__tags" href="/tags/AI-for-Storage/">AI for Storage</a><a class="post-meta__tags" href="/tags/Prefetching/">Prefetching</a></div><div class="post_share"><div class="social-share" data-image="/misaoimg/default_cover.png" data-sites="wechat,weibo,qq,facebook,twitter"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-full"><a href="/2023/04/09/Belady-s-MIN%E7%BC%93%E5%AD%98%E7%AE%A1%E7%90%86%E7%AE%97%E6%B3%95%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/" title="Belady's MIN缓存管理算法阅读笔记"><img class="cover" src="/misaoimg/default_cover.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">Previous Post</div><div class="prev_info">Belady's MIN缓存管理算法阅读笔记</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>Related Articles</span></div><div class="relatedPosts-list"><div><a href="/2023/03/31/Intelligent-Resource-Scheduling-for-Co-located-Latency-critical-Services-A-Multi-Model-Collaborative-Learning-Approach%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/" title="FAST 23-OSML 阅读笔记"><img class="cover" src="https://s2.loli.net/2023/03/31/Rk75L1VSt4uHTAd.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-03-31</div><div class="title">FAST 23-OSML 阅读笔记</div></div></a></div></div></div><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> Comment</span></div></div><div class="comment-wrap"><div><div id="gitalk-container"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/misaoimg/cute.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Dingcui Yu</div><div class="author-info__description">My name is Yu Dingcui(俞丁翠 in Chinese). This is my personal space, thank you for visiting :-)</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">5</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">12</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">2</div></a></div><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/DingcuiYu" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:dcyu@stu.ecnu.edu.cn" target="_blank" title="Email"><i class="fas fa-envelope"></i></a></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>Catalog</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%91%98%E8%A6%81"><span class="toc-number">1.</span> <span class="toc-text">摘要</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%83%8C%E6%99%AF"><span class="toc-number">2.</span> <span class="toc-text">背景</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8A%A8%E6%9C%BA"><span class="toc-number">3.</span> <span class="toc-text">动机</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A4%8D%E5%90%88%E6%96%87%E4%BB%B6%E7%9A%84%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%EF%BC%88Composite-File-File-System-CFFS%EF%BC%89%E8%AE%BE%E8%AE%A1"><span class="toc-number">4.</span> <span class="toc-text">复合文件的文件系统（Composite-File File System, CFFS）设计</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1%E3%80%81%E6%95%B0%E6%8D%AE%E7%9A%84%E8%A1%A8%E7%8E%B0%E5%BD%A2%E5%BC%8F"><span class="toc-number">4.1.</span> <span class="toc-text">1、数据的表现形式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2%E3%80%81%E5%85%83%E6%95%B0%E6%8D%AE%E7%9A%84%E8%A1%A8%E7%8E%B0%E5%BD%A2%E5%BC%8F%E5%92%8C%E5%AF%B9%E5%BA%94%E6%93%8D%E4%BD%9C"><span class="toc-number">4.2.</span> <span class="toc-text">2、元数据的表现形式和对应操作</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3%E3%80%81%E8%AF%86%E5%88%AB%E5%A4%8D%E5%90%88%E6%96%87%E4%BB%B6%E7%9A%84%E6%88%90%E5%91%98"><span class="toc-number">4.3.</span> <span class="toc-text">3、识别复合文件的成员</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#CFFS%E7%9A%84%E5%AE%9E%E7%8E%B0"><span class="toc-number">5.</span> <span class="toc-text">CFFS的实现</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C"><span class="toc-number">6.</span> <span class="toc-text">实验</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E7%8E%AF%E5%A2%83"><span class="toc-number">6.1.</span> <span class="toc-text">实验环境</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E7%BB%93%E6%9E%9C"><span class="toc-number">6.2.</span> <span class="toc-text">实验结果</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Microbenchmark%E7%9A%84%E5%AE%9E%E9%AA%8C%E7%BB%93%E6%9E%9C"><span class="toc-number">6.2.1.</span> <span class="toc-text">Microbenchmark的实验结果</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Web-Server-Trace-Replay%E7%9A%84%E5%AE%9E%E9%AA%8C%E7%BB%93%E6%9E%9C"><span class="toc-number">6.2.2.</span> <span class="toc-text">Web Server Trace Replay的实验结果</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Software-Development-File-System-Trace-Replay%E7%9A%84%E5%AE%9E%E9%AA%8C%E7%BB%93%E6%9E%9C"><span class="toc-number">6.2.3.</span> <span class="toc-text">Software Development File System Trace Replay的实验结果</span></a></li></ol></li></ol></li></ol></div></div></div></div></main><footer id="footer" style="background-image: url('/misaoimg/default_cover.png')"><div id="footer-wrap"><div class="copyright">&copy;2023 By Dingcui Yu</div><div class="framework-info"><span>Framework </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>Theme </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Read Mode"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="Switch Between Light And Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="Toggle between single-column and double-column"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="Setting"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="Table Of Contents"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="Scroll To Comments"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="Back To Top"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><div class="js-pjax"><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/katex/dist/katex.min.css"><script src="https://cdn.jsdelivr.net/npm/katex/dist/contrib/copy-tex.min.js"></script><script>(() => {
+  document.querySelectorAll('#article-container span.katex-display').forEach(item => {
+    btf.wrap(item, 'div', { class: 'katex-wrap'})
+  })
+})()</script><script>function loadGitalk () {
+  function initGitalk () {
+    var gitalk = new Gitalk(Object.assign({
+      clientID: '3b20b2ae88a627e5f873',
+      clientSecret: '552e156b12b7cab77928962eb1bd4f12d1ab802d',
+      repo: 'dingcuiyu.github.io',
+      owner: 'DingcuiYu',
+      admin: ['DingcuiYu'],
+      id: '8282fd3dc3331319a20729a323f0b91e',
+      updateCountCallback: commentCount
+    },null))
+
+    gitalk.render('gitalk-container')
+  }
+
+  if (typeof Gitalk === 'function') initGitalk()
+  else {
+    getCSS('https://cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.css')
+    getScript('https://cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.js').then(initGitalk)
+  }
+}
+
+function commentCount(n){
+  let isCommentCount = document.querySelector('#post-meta .gitalk-comment-count')
+  if (isCommentCount) {
+    isCommentCount.innerHTML= n
+  }
+}
+
+if ('Gitalk' === 'Gitalk' || !false) {
+  if (false) btf.loadComment(document.getElementById('gitalk-container'), loadGitalk)
+  else loadGitalk()
+} else {
+  function loadOtherComment () {
+    loadGitalk()
+  }
+}</script></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div><div id="algolia-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">Search</span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="search-wrap"><div id="algolia-search-input"></div><hr/><div id="algolia-search-results"><div id="algolia-hits"></div><div id="algolia-pagination"></div><div id="algolia-info"><div class="algolia-stats"></div><div class="algolia-poweredBy"></div></div></div></div></div><div id="search-mask"></div><script src="https://cdn.jsdelivr.net/npm/algoliasearch/dist/algoliasearch-lite.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/instantsearch.js/dist/instantsearch.production.min.js"></script><script src="/js/search/algolia.js"></script></div></body></html>

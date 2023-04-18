@@ -6,7 +6,7 @@
   <link href="http://dingcuiyu.github.io/atom.xml" rel="self"/>
   
   <link href="http://dingcuiyu.github.io/"/>
-  <updated>2023-04-09T09:07:08.842Z</updated>
+  <updated>2023-04-18T11:40:35.918Z</updated>
   <id>http://dingcuiyu.github.io/</id>
   
   <author>
@@ -15,6 +15,41 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>FAST 16 - CFFS阅读笔记</title>
+    <link href="http://dingcuiyu.github.io/2023/04/18/FAST-16-CFFS%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/"/>
+    <id>http://dingcuiyu.github.io/2023/04/18/FAST-16-CFFS%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/</id>
+    <published>2023-04-18T11:25:00.000Z</published>
+    <updated>2023-04-18T11:40:35.918Z</updated>
+    
+    <content type="html"><![CDATA[<p><strong>The Composite-file File System: Decoupling the One-to-One Mapping of Files and Metadata for Better Performance</strong></p><p><code>Author</code>: Shuanglong Zhang. et al</p><p><code>Conference or Journal</code>: FAST；TOS</p><p><code>Institute</code>: Google &amp; Florida State University</p><p><code>IsOpenSource</code>: No</p><p><code>Link</code>: <a href="https://www.usenix.org/system/files/conference/fast16/fast16-papers-zhang-shuanglong.pdf">https://www.usenix.org/system/files/conference/fast16/fast16-papers-zhang-shuanglong.pdf</a></p><p><code>Published Date</code>: February 22, 2016 → March 1, 2020</p><h2 id="摘要">摘要</h2><p>传统的文件系统优化是基于文件与其元数据一一对应的基础上进行的，而这种文件-元数据的绑定会限制一些优化。本文设计并且实现、评估了一种复合文件文件系统，即允许文件到元数据的多对一映射。同时本文评估了多种映射机制的实现方式。在web服务器和软件生产工作集中，实证分析表明，本文提出的方式相比ext4，有超过27%的性能提升。</p><h2 id="背景">背景</h2><p>文件与元数据的一对一映射会限制一些优化方案。例如，预取多个文件块时也需要预取对应文件的元数据——而这是预取的主要副作用。有研究表明，访问32个小文件的延迟比访问同样大小的大文件的延迟高50%。</p><p>因此，作者提出把多文件复合，公用同一个元数据，以减少对元数据的磁盘访问。</p><h2 id="动机">动机</h2><p>具体来说，除了上文提到的预取开销，作者提出CFFS（Composite-File File System）的其他动机如下：</p><ul><li><strong>频繁的小文件访问</strong></li></ul><p>作者内部的分析表明，超过80%的文件访问是针对小于32KB的小文件的。在从磁盘读取小文件花费的时间中，接近40%的时间花在了元数据访问上。所以，减少元数据I/O访问开销很有效。</p><ul><li><strong>冗余的元数据信息</strong></li></ul><p>许多文件的元数据属性是一致的，例如文件持有者、访问权限等。有研究表明，在工作站中对元数据压缩有最多75%的压缩率。使用共用的元数据只能减少很少的空间占用，但可以减少很多对元数据的I/O访问。</p><ul><li><strong>文件成组访问</strong></li></ul><p>研究表明，文件大多数是一起被访问的。例如访问网页时会访问其中引用的文件页。但是，之前针对此的方法的性能提升并不是线性的，因为有文件聚集的开销。</p><ul><li><strong>访问每个文件的开销比较高</strong></li></ul><p>如下图，访问同样大小的数据，访问开销与文件大小成反比。同时印证了背景中提出的小文件开销过大的问题。</p><p><img src="https://s2.loli.net/2023/04/18/3EjP6g1IQ5DLVkS.png" alt="图 1"></p><h2 id="复合文件的文件系统（Composite-File-File-System-CFFS）设计">复合文件的文件系统（Composite-File File System, CFFS）设计</h2><p>**复合文件：**多个频繁被一起访问的小文件（<strong>子文件</strong>）组成复合文件，并共享一个元数据。小文件独有的元数据信息存储在 <code>inode</code> 中的 <code>extented attribute</code> 里。</p><p>复合文件对用户不可见，而且针对文件的各种语义（包括日志等）和操作的方式保持不变。</p><p>此时可以透明地利用VFS的预取以<strong>把多个小文件一起</strong>取到内存中。</p><h3 id="1、数据的表现形式">1、数据的表现形式</h3><p>子文件中的第一个文件是一个“entry point”，即开启预取的点。</p><h3 id="2、元数据的表现形式和对应操作">2、元数据的表现形式和对应操作</h3><ul><li><strong>复合文件创建</strong></li></ul><p>如下图：</p><p><img src="https://s2.loli.net/2023/04/18/m1oC7eRLSpuDEgc.png" alt="图 2"></p><ul><li><strong>权限</strong></li></ul><p>复合文件的 <code>inode</code> 的权限是所有子文件的权限的并集，每个子文件额外的权限会存储在附加属性中。</p><ul><li><strong>文件大小</strong></li></ul><p>当处于中间的子文件释放时，不会改变复合文件的大小。除非复合文件的空间利用率小于50%。</p><ul><li><code>inode</code> <strong>命名空间</strong></li></ul><p>复合文件的ID的高N位是复合文件的 <code>inode</code>  id，低M位用于子文件的ID。整个ID在本文中被称为 <code>CUID</code> 。如下图：</p><p><img src="https://s2.loli.net/2023/04/18/L621byYnsSxH5i3.png" alt="图 3"></p><ul><li><strong>重命名</strong></li></ul><p>如果不包括把一个普通文件转化为复合文件（或者相反的操作），则重命名不改变 <code>CUID</code> ，反之，重命名会改变 <code>CUID</code> 。</p><blockquote><p>这一设定对根据 <code>inode</code> 的“唯一性”、“不变性”来识别文件的应用不友好。</p></blockquote><ul><li><strong>锁</strong></li></ul><p>复合文件有一个锁，每个子文件同时各有一个锁。通常复合文件的锁可以同时获得，除非会影响到子文件之间的一致性（如更新子文件的成员、移动子文件在复合文件中的位置）。</p><ul><li><strong>更多</strong></li></ul><p>看论文。</p><h3 id="3、识别复合文件的成员">3、识别复合文件的成员</h3><ul><li><strong>基于目录的小文件复合</strong></li></ul><p>一个目录下的文件常常会被一起访问，所以这种办法把同一个目录下的文件（包括子目录）复合为一个复合文件。这种办法无法捕获目录间的文件关系。</p><ul><li><strong>基于内部引用的小文件复合</strong></li></ul><p><code>html</code> 文件中常常包含超链接，网络爬虫常常通过这些链接访问其他文件。</p><p>此外，基于 <code>Makefile</code> 的规则的编译也暗含了内部引用，即把生成同一个目标的源文件复合。</p><p>但问题是这种办法需要对文本格式有了解，进行特定格式的文本分析。</p><ul><li><strong>基于频率挖掘的小文件复合</strong></li></ul><p>可以使用Apriori算法来发掘频繁访问的模式。大致流程如下图：</p><p><img src="https://s2.loli.net/2023/04/18/6GaO4y1mwCfHPlW.png" alt="图 4"></p><p>详细原理请参考<a href="https://zhuanlan.zhihu.com/p/341882260">这里</a>。这种办法的内存和训练开销都很大。</p><h2 id="CFFS的实现">CFFS的实现</h2><p>本文使用 <code>FUSE(v2.9.3)</code>框架，在用户态建立了CFFS的原型，Linux版本是 <code>3.16.7</code> ，如下图：</p><p><img src="https://s2.loli.net/2023/04/18/7vXFlsdwStp2bOB.png" alt="图 5"></p><p>更多内容请见论文。</p><h2 id="实验">实验</h2><h3 id="实验环境">实验环境</h3><p><img src="https://s2.loli.net/2023/04/18/EefwFDckrZ81x5G.png" alt="图 6"></p><h3 id="实验结果">实验结果</h3><h4 id="Microbenchmark的实验结果">Microbenchmark的实验结果</h4><p>比较：完成时间</p><p><img src="https://s2.loli.net/2023/04/18/sXzo8jAhgU6MDZS.png" alt="图 7"></p><p><img src="https://s2.loli.net/2023/04/18/iaNl7HcojKwOvB2.png" alt="图 8"></p><h4 id="Web-Server-Trace-Replay的实验结果">Web Server Trace Replay的实验结果</h4><p>HDD 中1e-02之前的请求是缓存命中的。</p><p><img src="https://s2.loli.net/2023/04/18/4kfLxqcpB25Dr98.png" alt="图 9"></p><p><img src="https://s2.loli.net/2023/04/18/VG3UfMsT4lZFjR1.png" alt="图 10"></p><h4 id="Software-Development-File-System-Trace-Replay的实验结果">Software Development File System Trace Replay的实验结果</h4><p>因为不好收集单个请求的延迟，所以这里绘出了整体的完成时间。</p><p><img src="https://s2.loli.net/2023/04/18/gBJqbT1XvALamK2.png" alt="图 11"></p>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;p&gt;&lt;strong&gt;The Composite-file File System: Decoupling the One-to-One Mapping of Files and Metadata for Better Performance&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;c</summary>
+      
+    
+    
+    
+    <category term="Paper Reading" scheme="http://dingcuiyu.github.io/categories/Paper-Reading/"/>
+    
+    
+    <category term="FAST 16" scheme="http://dingcuiyu.github.io/tags/FAST-16/"/>
+    
+    <category term="TOS 20" scheme="http://dingcuiyu.github.io/tags/TOS-20/"/>
+    
+    <category term="Small Files" scheme="http://dingcuiyu.github.io/tags/Small-Files/"/>
+    
+    <category term="Metadata" scheme="http://dingcuiyu.github.io/tags/Metadata/"/>
+    
+    <category term="AI for Storage" scheme="http://dingcuiyu.github.io/tags/AI-for-Storage/"/>
+    
+    <category term="Prefetching" scheme="http://dingcuiyu.github.io/tags/Prefetching/"/>
+    
+  </entry>
   
   <entry>
     <title>Belady&#39;s MIN缓存管理算法阅读笔记</title>
@@ -67,9 +102,9 @@
     <category term="Paper Reading" scheme="http://dingcuiyu.github.io/categories/Paper-Reading/"/>
     
     
-    <category term="FAST 23" scheme="http://dingcuiyu.github.io/tags/FAST-23/"/>
-    
     <category term="AI for Storage" scheme="http://dingcuiyu.github.io/tags/AI-for-Storage/"/>
+    
+    <category term="FAST 23" scheme="http://dingcuiyu.github.io/tags/FAST-23/"/>
     
     <category term="Resource Scheduling" scheme="http://dingcuiyu.github.io/tags/Resource-Scheduling/"/>
     
