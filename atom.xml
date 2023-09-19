@@ -37,6 +37,8 @@
     <category term="Paper Reading" scheme="http://dingcuiyu.github.io/categories/Paper-Reading/"/>
     
     
+    <category term="AI for Storage" scheme="http://dingcuiyu.github.io/tags/AI-for-Storage/"/>
+    
     <category term="FAST 16" scheme="http://dingcuiyu.github.io/tags/FAST-16/"/>
     
     <category term="TOS 20" scheme="http://dingcuiyu.github.io/tags/TOS-20/"/>
@@ -44,8 +46,6 @@
     <category term="Small Files" scheme="http://dingcuiyu.github.io/tags/Small-Files/"/>
     
     <category term="Metadata" scheme="http://dingcuiyu.github.io/tags/Metadata/"/>
-    
-    <category term="AI for Storage" scheme="http://dingcuiyu.github.io/tags/AI-for-Storage/"/>
     
     <category term="Prefetching" scheme="http://dingcuiyu.github.io/tags/Prefetching/"/>
     
@@ -102,9 +102,9 @@
     <category term="Paper Reading" scheme="http://dingcuiyu.github.io/categories/Paper-Reading/"/>
     
     
-    <category term="AI for Storage" scheme="http://dingcuiyu.github.io/tags/AI-for-Storage/"/>
-    
     <category term="FAST 23" scheme="http://dingcuiyu.github.io/tags/FAST-23/"/>
+    
+    <category term="AI for Storage" scheme="http://dingcuiyu.github.io/tags/AI-for-Storage/"/>
     
     <category term="Resource Scheduling" scheme="http://dingcuiyu.github.io/tags/Resource-Scheduling/"/>
     
