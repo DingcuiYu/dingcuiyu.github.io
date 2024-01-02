@@ -1,3 +1,4 @@
+http://dingcuiyu.github.io/link/index.html
 http://dingcuiyu.github.io/2023/03/31/Intelligent-Resource-Scheduling-for-Co-located-Latency-critical-Services-A-Multi-Model-Collaborative-Learning-Approach%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/
 http://dingcuiyu.github.io/2023/04/18/FAST-16-CFFS%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/
 http://dingcuiyu.github.io/2023/04/09/Belady-s-MIN%E7%BC%93%E5%AD%98%E7%AE%A1%E7%90%86%E7%AE%97%E6%B3%95%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/
@@ -6,7 +7,6 @@ http://dingcuiyu.github.io/2023/09/19/%E5%88%A9%E7%94%A8io-uring%E5%AE%9E%E7%8E%
 http://dingcuiyu.github.io/Publications/index.html
 http://dingcuiyu.github.io/2023/03/14/ChCore-lab-v2-ECNUver-LAB-2-%E4%B8%8A%EF%BC%89/
 http://dingcuiyu.github.io/about/index.html
-http://dingcuiyu.github.io/link/index.html
 http://dingcuiyu.github.io/2023/03/14/test/
 http://dingcuiyu.github.io/tags/index.html
 http://dingcuiyu.github.io/
