@@ -4,7 +4,7 @@
   <url>
     <loc>http://dingcuiyu.github.io/link/index.html</loc>
     
-    <lastmod>2024-01-02</lastmod>
+    <lastmod>2024-01-03</lastmod>
     
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -103,7 +103,7 @@
 
   <url>
     <loc>http://dingcuiyu.github.io/</loc>
-    <lastmod>2024-01-02</lastmod>
+    <lastmod>2024-01-03</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
@@ -111,84 +111,84 @@
   
   <url>
     <loc>http://dingcuiyu.github.io/tags/Cache-Management/</loc>
-    <lastmod>2024-01-02</lastmod>
+    <lastmod>2024-01-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://dingcuiyu.github.io/tags/Cache-Eviction/</loc>
-    <lastmod>2024-01-02</lastmod>
+    <lastmod>2024-01-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://dingcuiyu.github.io/tags/Classical/</loc>
-    <lastmod>2024-01-02</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>http://dingcuiyu.github.io/tags/AI-for-Storage/</loc>
-    <lastmod>2024-01-02</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>http://dingcuiyu.github.io/tags/FAST-16/</loc>
-    <lastmod>2024-01-02</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>http://dingcuiyu.github.io/tags/TOS-20/</loc>
-    <lastmod>2024-01-02</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>http://dingcuiyu.github.io/tags/Small-Files/</loc>
-    <lastmod>2024-01-02</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>http://dingcuiyu.github.io/tags/Metadata/</loc>
-    <lastmod>2024-01-02</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>http://dingcuiyu.github.io/tags/Prefetching/</loc>
-    <lastmod>2024-01-02</lastmod>
+    <lastmod>2024-01-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://dingcuiyu.github.io/tags/%E5%AE%9E%E9%AA%8C%E6%89%8B%E5%86%8C/</loc>
-    <lastmod>2024-01-02</lastmod>
+    <lastmod>2024-01-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://dingcuiyu.github.io/tags/FAST-23/</loc>
-    <lastmod>2024-01-02</lastmod>
+    <lastmod>2024-01-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://dingcuiyu.github.io/tags/AI-for-Storage/</loc>
+    <lastmod>2024-01-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://dingcuiyu.github.io/tags/Resource-Scheduling/</loc>
-    <lastmod>2024-01-02</lastmod>
+    <lastmod>2024-01-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://dingcuiyu.github.io/tags/FAST-16/</loc>
+    <lastmod>2024-01-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://dingcuiyu.github.io/tags/TOS-20/</loc>
+    <lastmod>2024-01-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://dingcuiyu.github.io/tags/Small-Files/</loc>
+    <lastmod>2024-01-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://dingcuiyu.github.io/tags/Metadata/</loc>
+    <lastmod>2024-01-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://dingcuiyu.github.io/tags/Prefetching/</loc>
+    <lastmod>2024-01-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
@@ -197,14 +197,14 @@
   
   <url>
     <loc>http://dingcuiyu.github.io/categories/Paper/</loc>
-    <lastmod>2024-01-02</lastmod>
+    <lastmod>2024-01-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://dingcuiyu.github.io/categories/OSLab/</loc>
-    <lastmod>2024-01-02</lastmod>
+    <lastmod>2024-01-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
