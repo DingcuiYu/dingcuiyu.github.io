@@ -28,18 +28,6 @@ window.PUBLICATIONS = [
     ]
   },
   {
-    title: "ConZone+: Practical Zoned Flash Storage Emulation for Consumer Devices",
-    authors: ["Dingcui Yu", "Z Yan", "J Liu", "Y Zhao", "Y Wang", "X Duan", "Y Lv", "L Shi"],
-    venue: "arXiv preprint arXiv:2510.15885",
-    year: "2025",
-    links: [
-      {
-        label: "arXiv",
-        url: "https://arxiv.org/abs/2510.15885"
-      }
-    ]
-  },
-  {
     title: "DISS: A Novel Data Invalidation Scheme for Swap-Data on Flash Storage Systems",
     authors: ["Dingcui Yu", "L Luo", "H Wang", "Y Lv", "L Shi"],
     venue: "Proceedings of the 30th Asia and South Pacific Design Automation Conference",
@@ -60,18 +48,6 @@ window.PUBLICATIONS = [
       {
         label: "Paper",
         url: "https://doi.org/10.1109/TCSI.2025.3551354"
-      }
-    ]
-  },
-  {
-    title: "Waltz: Temperature-Aware Cooperative Compression for High-Performance Compression-Based CSDs",
-    authors: ["Dingcui Yu", "Y Song", "Y Huang", "Y Zhao", "Y Lv", "C Wang", "Y Zhang", "L Shi"],
-    venue: "arXiv preprint arXiv:2509.05365",
-    year: "2025",
-    links: [
-      {
-        label: "arXiv",
-        url: "https://arxiv.org/abs/2509.05365"
       }
     ]
   },
@@ -200,6 +176,37 @@ window.PUBLICATIONS = [
       {
         label: "Paper",
         url: "https://dl.acm.org/doi/abs/10.1145/3489517.3530468"
+      }
+    ]
+  }
+];
+
+window.JUST_ACCEPTED = [
+  {
+    title: "ConZone+: Practical Zoned Flash Storage Emulation for Consumer Devices",
+    authors: ["Dingcui Yu", "Z Yan", "J Liu", "Y Zhao", "Y Wang", "X Duan", "Y Lv", "L Shi"],
+    venue: "ACM Transactions on Storage (TOS)",
+    links: [
+      {
+        label: "arXiv",
+        url: "https://arxiv.org/submit/7719726/view"
+      }
+    ]
+  },
+  {
+    title: "FreeZone: An On-Device Out-of-Order Writes Reordering Scheme for Consumer Zoned Storage",
+    authors: ["Dingcui Yu", "Mengyang Ma", "Tianyu Ren", "Hongyu Zhu", "Xinghui Duan", "Yina Lv", "Lei Qiao", "Liang Shi"],
+    venue: "Design Automation Conference (DAC)",
+    links: []
+  },
+  {
+    title: "Waltz: Temperature-Aware Cooperative Compression for High-Performance Compression-Based CSDs",
+    authors: ["Dingcui Yu", "Y Song", "Y Huang", "Y Zhao", "Y Lv", "C Wang", "Y Zhang", "L Shi"],
+    venue: "ACM Transactions on Storage (TOS)",
+    links: [
+      {
+        label: "arXiv",
+        url: "https://arxiv.org/abs/2509.05365"
       }
     ]
   }

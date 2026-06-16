@@ -1,16 +1,4 @@
 (function () {
-  const container = document.getElementById("publication-list");
-  if (!container) return;
-
-  const publications = Array.isArray(window.PUBLICATIONS) ? window.PUBLICATIONS : [];
-  const limit = Number(container.dataset.limit || publications.length);
-  const visiblePublications = publications.slice(0, limit);
-
-  if (visiblePublications.length === 0) {
-    container.innerHTML = "<p>No publications listed yet.</p>";
-    return;
-  }
-
   const escapeHtml = (value) => String(value || "")
     .replace(/&/g, "&amp;")
     .replace(/</g, "&lt;")
@@ -25,7 +13,7 @@
     })
     .join(", ");
 
-  container.innerHTML = visiblePublications.map((publication) => {
+  const renderPublication = (publication) => {
     const links = (publication.links || [])
       .map((link) => `<a href="${escapeHtml(link.url)}" target="_blank" rel="noopener">${escapeHtml(link.label)}</a>`)
       .join(" ");
@@ -37,9 +25,33 @@
       <article class="publication-item">
         <h3>${escapeHtml(publication.title)}${awards ? ` <span class="publication-awards">${awards}</span>` : ""}</h3>
         <p class="publication-authors">${renderAuthors(publication.authors || [])}</p>
-        <p class="publication-meta">${escapeHtml(publication.venue)}${publication.venue && publication.year ? ", " : ""}${escapeHtml(publication.year)}</p>
+        <p class="publication-meta">${escapeHtml(publication.venue)}${publication.venue && publication.year ? ", " : ""}${escapeHtml(publication.year || "")}</p>
         ${links ? `<p class="publication-links">${links}</p>` : ""}
       </article>
     `;
-  }).join("");
+  };
+
+  const renderList = (container, publications, emptyMessage) => {
+    const limit = Number(container.dataset.limit || publications.length);
+    const visiblePublications = publications.slice(0, limit);
+
+    if (visiblePublications.length === 0) {
+      container.innerHTML = `<p>${escapeHtml(emptyMessage)}</p>`;
+      return;
+    }
+
+    container.innerHTML = visiblePublications.map(renderPublication).join("");
+  };
+
+  const justAcceptedContainer = document.getElementById("just-accepted-list");
+  if (justAcceptedContainer) {
+    const justAccepted = Array.isArray(window.JUST_ACCEPTED) ? window.JUST_ACCEPTED : [];
+    renderList(justAcceptedContainer, justAccepted, "No accepted papers listed yet.");
+  }
+
+  const publicationContainer = document.getElementById("publication-list");
+  if (publicationContainer) {
+    const publications = Array.isArray(window.PUBLICATIONS) ? window.PUBLICATIONS : [];
+    renderList(publicationContainer, publications, "No publications listed yet.");
+  }
 }());
